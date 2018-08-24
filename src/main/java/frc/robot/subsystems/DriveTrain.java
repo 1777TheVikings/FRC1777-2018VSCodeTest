@@ -45,7 +45,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public void teleopDrive() {
-    drive.tankDrive(Robot.oi.getLeftY(), Robot.oi.getRightY());
+    drive.arcadeDrive(Robot.oi.getLeftY(), Robot.oi.getLeftX());
 
     if (Robot.oi.getTransmission()) {
       fastTransmission();
@@ -54,11 +54,15 @@ public class DriveTrain extends Subsystem {
     }
   }
 
+  public void autoDrive(double left, double right) {
+    drive.tankDrive(left, right);
+  }
+
   public void fastTransmission() {
-    transmissionSolenoid.set(Value.kForward);
+    transmissionSolenoid.set(Value.kReverse);
   }
 
   public void slowTransmission() {
-    transmissionSolenoid.set(Value.kReverse);
+    transmissionSolenoid.set(Value.kForward);
   }
 }

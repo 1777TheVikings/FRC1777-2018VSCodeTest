@@ -10,9 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TeleopDrive extends Command {
-  public TeleopDrive() {
-    requires(Robot.driveTrain);
+public class TeleopClaw extends Command {
+  public TeleopClaw() {
+    requires(Robot.claw);
   }
 
   // Called just before this Command runs the first time
@@ -23,7 +23,7 @@ public class TeleopDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.teleopDrive();  // TODO: Move the code from this method to here
+    Robot.claw.teleopControl();  // TODO: Move the code from this method to here
   }
 
   // Make this return true when this Command no longer needs to run execute()

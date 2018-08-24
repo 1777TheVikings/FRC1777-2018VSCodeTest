@@ -7,25 +7,37 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import frc.utils.Configuration;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
+ * 
+ * All controls should be configurable using the Configuration class.
  */
 public class OI {
-  private static Joystick leftJoystick = new Joystick(RobotMap.leftJoystick);
-  private static Joystick rightJoystick = new Joystick(RobotMap.rightJoystick);
+  private static XboxController controller = new XboxController(RobotMap.controller);
+  private static Configuration config = new Configuration("Default");
 
   public double getLeftY() {
-    return leftJoystick.getY();
+    return controller.getY(config.getMovementHand()) * config.getThrottleMultiplier();
   }
 
-  public double getRightY() {
-    return rightJoystick.getY();
+  public double getLeftX() {
+    return controller.getX(config.getMovementHand()) * config.getRotationMultiplier();
   }
 
   public boolean getTransmission() {
-    return rightJoystick.getRawButton(3);
+    return controller.getRawButton(config.getTransmissionButton());
+  }
+
+  public boolean getClawSolenoid() {
+    return controller.getRawButton(config.getClawButton());
+  }
+
+  // TODO: don't hardcode this
+  public double getClawWheels() {
+    return controller.getRawAxis(3) - controller.getRawAxis(2);
   }
 }

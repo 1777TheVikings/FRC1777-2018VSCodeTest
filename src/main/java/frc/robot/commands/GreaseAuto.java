@@ -10,8 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TeleopDrive extends Command {
-  public TeleopDrive() {
+public class GreaseAuto extends Command {
+  public GreaseAuto() {
+    // Use requires() here to declare subsystem dependencies
     requires(Robot.driveTrain);
   }
 
@@ -23,7 +24,7 @@ public class TeleopDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.teleopDrive();  // TODO: Move the code from this method to here
+    Robot.driveTrain.autoDrive(0.3, 0.3);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -35,6 +36,7 @@ public class TeleopDrive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.driveTrain.autoDrive(0.0, 0.0);
   }
 
   // Called when another command which requires one or more of the same

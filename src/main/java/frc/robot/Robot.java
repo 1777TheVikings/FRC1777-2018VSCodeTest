@@ -7,10 +7,15 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.commands.GreaseAuto;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveTrain;
+import frc.utils.Configuration;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,8 +28,11 @@ public class Robot extends TimedRobot {
   public static OI oi = new OI();
 
   public static DriveTrain driveTrain = new DriveTrain();
+  public static Claw claw = new Claw();
 
   public static Compressor compressor = new Compressor(RobotMap.compressor);
+
+  public static GreaseAuto auto;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -32,6 +40,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    ArrayList<String> allConfigs = Configuration.getAllConfigs();
+    if (!allConfigs.contains("Default")) {
+      Configuration defaultConfig = new Configuration();
+      defaultConfig.setUsername("Default");  // other defaults are already set
+      defaultConfig.saveToXML();
+      allConfigs.add("Default");
+    }
+    System.out.println("List of configs:");
+    for (String configName : allConfigs) {
+      System.out.println("  - " + configName);
+    }
   }
 
   /**
@@ -86,6 +105,8 @@ public class Robot extends TimedRobot {
     // if (m_autonomousCommand != null) {
     //   m_autonomousCommand.start();
     // }
+    auto = new GreaseAuto();
+    auto.start();
   }
 
   /**
@@ -102,9 +123,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    // if (m_autonomousCommand != null) {
-    //   m_autonomousCommand.cancel();
-    // }
+    // auto.cancel();
   }
 
   /**
