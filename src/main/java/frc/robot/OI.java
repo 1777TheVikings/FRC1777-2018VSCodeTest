@@ -8,7 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-import frc.utils.Configuration;
+import frc.robot.Robot;
+import frc.utils.Configuration.ButtonMode;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -18,26 +19,44 @@ import frc.utils.Configuration;
  */
 public class OI {
   private static XboxController controller = new XboxController(RobotMap.controller);
-  private static Configuration config = new Configuration("Default");
+
+  private boolean isTransmissionToggledOn = false;
+  private boolean isClawSolenoidToggledOn = false;
 
   public double getLeftY() {
-    return controller.getY(config.getMovementHand()) * config.getThrottleMultiplier();
+    return controller.getY(Robot.configManager.getCurrentConfiguration().getMovementHand()) *
+                           Robot.configManager.getCurrentConfiguration().getThrottleMultiplier();
   }
 
   public double getLeftX() {
-    return controller.getX(config.getMovementHand()) * config.getRotationMultiplier();
+    return controller.getX(Robot.configManager.getCurrentConfiguration().getMovementHand()) *
+                           Robot.configManager.getCurrentConfiguration().getRotationMultiplier();
   }
 
   public boolean getTransmission() {
-    return controller.getRawButton(config.getTransmissionButton());
+    if (Robot.configManager.getCurrentConfiguration().getTransmissionButtonMode() == ButtonMode.HOLD) {
+      return controller.getRawButton(Robot.configManager.getCurrentConfiguration().getTransmissionButton());
+    } else {  // ButtonMode.TOGGLE
+      if (controller.getRawButtonPressed(Robot.configManager.getCurrentConfiguration().getTransmissionButton())) {
+        isTransmissionToggledOn = !isTransmissionToggledOn;
+      }
+      return isTransmissionToggledOn;
+    }
   }
 
   public boolean getClawSolenoid() {
-    return controller.getRawButton(config.getClawButton());
+    if (Robot.configManager.getCurrentConfiguration().getClawButtonMode() == ButtonMode.HOLD) {
+      return controller.getRawButton(Robot.configManager.getCurrentConfiguration().getClawButton());
+    } else {  // ButtonMode.HOLD
+      if (controller.getRawButtonPressed(Robot.configManager.getCurrentConfiguration().getClawButton())) {
+        isClawSolenoidToggledOn = !isClawSolenoidToggledOn;
+      }
+      return isClawSolenoidToggledOn;
+    }
   }
 
-  // TODO: don't hardcode this
   public double getClawWheels() {
-    return controller.getRawAxis(3) - controller.getRawAxis(2);
+    return controller.getRawAxis(Robot.configManager.getCurrentConfiguration().getIntakeInputAxis()) -
+           controller.getRawAxis(Robot.configManager.getCurrentConfiguration().getIntakeOutputAxis());
   }
 }

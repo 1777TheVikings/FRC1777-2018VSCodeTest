@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.TeleopClaw;
 
@@ -26,11 +25,6 @@ public class Claw extends Subsystem {
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new TeleopClaw());
-  }
-
-  public void teleopControl() {
-    controlIntake(Robot.oi.getClawWheels());
-    controlSolenoid(Robot.oi.getClawSolenoid());
   }
 
   /**

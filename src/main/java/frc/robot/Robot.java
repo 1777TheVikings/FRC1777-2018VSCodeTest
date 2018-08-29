@@ -7,15 +7,17 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.commands.GreaseAuto;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveTrain;
-import frc.utils.Configuration;
+
+import frc.utils.ConfigurationManager;
+import frc.utils.MB1013;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,6 +28,7 @@ import frc.utils.Configuration;
  */
 public class Robot extends TimedRobot {
   public static OI oi = new OI();
+  public static ConfigurationManager configManager = new ConfigurationManager();
 
   public static DriveTrain driveTrain = new DriveTrain();
   public static Claw claw = new Claw();
@@ -34,23 +37,15 @@ public class Robot extends TimedRobot {
 
   public static GreaseAuto auto;
 
+  public static MB1013 distanceSensor = new MB1013(1);
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
-    ArrayList<String> allConfigs = Configuration.getAllConfigs();
-    if (!allConfigs.contains("Default")) {
-      Configuration defaultConfig = new Configuration();
-      defaultConfig.setUsername("Default");  // other defaults are already set
-      defaultConfig.saveToXML();
-      allConfigs.add("Default");
-    }
-    System.out.println("List of configs:");
-    for (String configName : allConfigs) {
-      System.out.println("  - " + configName);
-    }
+    
   }
 
   /**
@@ -63,6 +58,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("DistanceSensor", distanceSensor.getDistance());
   }
 
   /**
@@ -139,5 +135,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    
   }
 }

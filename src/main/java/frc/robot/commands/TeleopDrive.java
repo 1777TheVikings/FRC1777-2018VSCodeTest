@@ -23,7 +23,13 @@ public class TeleopDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.teleopDrive();  // TODO: Move the code from this method to here
+    Robot.driveTrain.teleopDrive(Robot.oi.getLeftY(), Robot.oi.getLeftX());
+
+    if (Robot.oi.getTransmission()) {
+      Robot.driveTrain.fastTransmission();
+    } else {
+      Robot.driveTrain.slowTransmission();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

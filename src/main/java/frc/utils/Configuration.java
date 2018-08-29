@@ -12,7 +12,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import java.io.*;
-import java.util.ArrayList;
 
 import org.w3c.dom.*;
 
@@ -23,12 +22,10 @@ public class Configuration {
          */
         HOLD,
         /**
-         * The button's action can be toggled on and off. This currently has no effect.
+         * The button's action can be toggled on and off.
          */
-        TOGGLE  // TODO: Make this do things
+        TOGGLE
     }
-
-    public static File SAVE_PATH = new File("/home/lvuser/configs");
 
     /**
      * The name of the person using this configuration. This is also used to name the XML file.
@@ -71,6 +68,16 @@ public class Configuration {
     private ButtonMode clawButtonMode = ButtonMode.HOLD;
 
     /**
+     * The axis to use for sucking in cubes.
+     */
+    private int intakeInputAxis = 3;
+
+    /**
+     * The axis to use for spitting out cubes.
+     */
+    private int intakeOutputAxis = 2;
+
+    /**
      * Creates an empty configuration.
      */
     public Configuration() {
@@ -79,13 +86,13 @@ public class Configuration {
     /**
      * Creates a configuration from an XML file. The data is read from ~/configs/$(username).xml
      */
-    public Configuration(String username) {
+    public Configuration(File file) {
         try {
-            this.username = username;
+            this.username = file.getName().substring(0, file.getName().length() - 4);
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(new File(SAVE_PATH, username + ".xml"));
+            Document doc = builder.parse(file);
             doc.getDocumentElement().normalize();
             
             NodeList movementHandList = doc.getElementsByTagName("MovementHand");
@@ -131,6 +138,22 @@ public class Configuration {
             clawButton = Integer.valueOf(clawButtonNode.getTextContent());
             clawButtonMode = ButtonMode.valueOf(clawButtonNode.getAttributes()
                                                 .getNamedItem("mode").getTextContent().toUpperCase());
+
+            NodeList intakeInputAxisList = doc.getElementsByTagName("IntakeInputAxis");
+            if (intakeInputAxisList.getLength() != 1) {
+                throw new XMLParseException("Wrong number of IntakeInputAxis: "
+                                            + String.valueOf(intakeInputAxisList.getLength()));
+            }
+            Node intakeInputAxisNode = intakeInputAxisList.item(0);
+            intakeInputAxis = Integer.valueOf(intakeInputAxisNode.getTextContent());
+
+            NodeList intakeOutputAxisList = doc.getElementsByTagName("IntakeOutputAxis");
+            if (intakeOutputAxisList.getLength() != 1) {
+                throw new XMLParseException("Wrong number of IntakeInputAxis: "
+                                            + String.valueOf(intakeOutputAxisList.getLength()));
+            }
+            Node intakeOutputAxisNode = intakeOutputAxisList.item(0);
+            intakeInputAxis = Integer.valueOf(intakeOutputAxisNode.getTextContent());
         } catch (Exception ex) {
             DriverStation.reportError("Failed to load XML file: " + ex.getMessage(), ex.getStackTrace());
             return;
@@ -201,10 +224,26 @@ public class Configuration {
         this.clawButtonMode = mode;
     }
 
+    public int getIntakeInputAxis() {
+        return intakeInputAxis;
+    }
+
+    public void setIntakeInputAxis(int axis) {
+        intakeInputAxis = axis;
+    }
+
+    public int getIntakeOutputAxis() {
+        return intakeOutputAxis;
+    }
+
+    public void setIntakeOutputAxis(int axis) {
+        intakeOutputAxis = axis;
+    }
+
     /**
      * Saves this configuration to an XML file. The data is saved to ~/configs/$(this.username).xml
      */
-    public void saveToXML() {
+    public void saveToXML(File file) {
         if (!verify()) {
             DriverStation.reportWarning("Verification failed when trying to save configuration", false);
             return;
@@ -244,18 +283,21 @@ public class Configuration {
             clawButtonElement.appendChild(doc.createTextNode(String.valueOf(clawButton)));
             rootElement.appendChild(clawButtonElement);
 
+            Element intakeInputAxisElement = doc.createElement("IntakeInputAxis");
+            intakeInputAxisElement.appendChild(doc.createTextNode(String.valueOf(intakeInputAxis)));
+            rootElement.appendChild(intakeInputAxisElement);
+
+            Element intakeOutputAxisElement = doc.createElement("IntakeOutputAxis");
+            intakeOutputAxisElement.appendChild(doc.createTextNode(String.valueOf(intakeOutputAxis)));
+            rootElement.appendChild(intakeOutputAxisElement);
+
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            
-            if (!SAVE_PATH.exists()) {
-                SAVE_PATH.mkdirs();
-            }
-            File outputFile = new File(SAVE_PATH, username + ".xml");
 
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(outputFile);
+            StreamResult result = new StreamResult(file);
             transformer.transform(source, result);
             System.out.println("Saved to /home/lvuser/config.xml");
         } catch (Exception ex) {
@@ -294,29 +336,5 @@ public class Configuration {
      */
     public boolean verify() {
         return verify(false);
-    }
-
-    /**
-     * Gets an array containing the names of all config files. If the folder does not already
-     * exist, the folder is created.
-     * 
-     * @return Names of all config files
-     */
-    public static ArrayList<String> getAllConfigs() {
-        if (!SAVE_PATH.exists()) {
-            SAVE_PATH.mkdirs();
-        }
-
-        ArrayList<String> output = new ArrayList<String>();
-
-        File[] allFiles = SAVE_PATH.listFiles();
-        for (int i = 0; i < allFiles.length; i++) {
-            if (allFiles[i].isFile() && allFiles[i].getName().endsWith(".xml")) {
-                String name = allFiles[i].getName();
-                output.add(name.substring(0, name.length() - 4));
-            }
-        }
-
-        return output;
     }
 }

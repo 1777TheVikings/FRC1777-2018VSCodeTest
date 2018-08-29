@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.TeleopDrive;
 
@@ -44,14 +43,8 @@ public class DriveTrain extends Subsystem {
     setDefaultCommand(new TeleopDrive());
   }
 
-  public void teleopDrive() {
-    drive.arcadeDrive(Robot.oi.getLeftY(), Robot.oi.getLeftX());
-
-    if (Robot.oi.getTransmission()) {
-      fastTransmission();
-    } else {
-      slowTransmission();
-    }
+  public void teleopDrive(double throttle, double rotation) {
+    drive.arcadeDrive(throttle, rotation);
   }
 
   public void autoDrive(double left, double right) {
