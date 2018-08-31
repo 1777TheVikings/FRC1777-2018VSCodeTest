@@ -58,26 +58,6 @@ public class Configuration {
     private ButtonMode transmissionButtonMode = ButtonMode.HOLD;
 
     /**
-     * The button to control the claw with.
-     */
-    private int clawButton = 3;
-
-    /**
-     * Determines how the claw button operates (hold = normally closed).
-     */
-    private ButtonMode clawButtonMode = ButtonMode.HOLD;
-
-    /**
-     * The axis to use for sucking in cubes.
-     */
-    private int intakeInputAxis = 3;
-
-    /**
-     * The axis to use for spitting out cubes.
-     */
-    private int intakeOutputAxis = 2;
-
-    /**
      * Creates an empty configuration.
      */
     public Configuration() {
@@ -96,7 +76,7 @@ public class Configuration {
             doc.getDocumentElement().normalize();
             
             NodeList movementHandList = doc.getElementsByTagName("MovementHand");
-            if (movementHandList.getLength() != 1) {
+            if (movementHandList.getLength() > 1) {
                 throw new XMLParseException("Wrong number of MovementHand elements: "
                                             + String.valueOf(movementHandList.getLength()));
             }
@@ -104,7 +84,7 @@ public class Configuration {
             movementHand = Hand.valueOf(movementHandNode.getTextContent());
 
             NodeList throttleMultiplierList = doc.getElementsByTagName("ThrottleMultiplier");
-            if (throttleMultiplierList.getLength() != 1) {
+            if (throttleMultiplierList.getLength() > 1) {
                 throw new XMLParseException("Wrong number of ThrottleMultiplier elements: "
                                             + String.valueOf(throttleMultiplierList.getLength()));
             }
@@ -112,7 +92,7 @@ public class Configuration {
             throttleMultiplier = Float.valueOf(throttleMultiplierNode.getTextContent());
 
             NodeList rotationMultiplierList = doc.getElementsByTagName("RotationMultiplier");
-            if (rotationMultiplierList.getLength() != 1) {
+            if (rotationMultiplierList.getLength() > 1) {
                 throw new XMLParseException("Wrong number of RotationMultiplier elements: "
                                             + String.valueOf(rotationMultiplierList.getLength()));
             }
@@ -120,7 +100,7 @@ public class Configuration {
             throttleMultiplier = Float.valueOf(rotationMultiplierNode.getTextContent());
 
             NodeList transmissionButtonList = doc.getElementsByTagName("TransmissionButton");
-            if (transmissionButtonList.getLength() != 1) {
+            if (transmissionButtonList.getLength() > 1) {
                 throw new XMLParseException("Wrong number of TransmissionButton elements: "
                                             + String.valueOf(movementHandList.getLength()));
             }
@@ -128,32 +108,6 @@ public class Configuration {
             transmissionButton = Integer.valueOf(transmissionButtonNode.getTextContent());
             transmissionButtonMode = ButtonMode.valueOf(transmissionButtonNode.getAttributes()
                                                         .getNamedItem("mode").getTextContent().toUpperCase());
-            
-            NodeList clawButtonList = doc.getElementsByTagName("ClawButton");
-            if (clawButtonList.getLength() != 1) {
-                throw new XMLParseException("Wrong number of ClawButton elements: "
-                                            + String.valueOf(clawButtonList.getLength()));
-            }
-            Node clawButtonNode = clawButtonList.item(0);
-            clawButton = Integer.valueOf(clawButtonNode.getTextContent());
-            clawButtonMode = ButtonMode.valueOf(clawButtonNode.getAttributes()
-                                                .getNamedItem("mode").getTextContent().toUpperCase());
-
-            NodeList intakeInputAxisList = doc.getElementsByTagName("IntakeInputAxis");
-            if (intakeInputAxisList.getLength() != 1) {
-                throw new XMLParseException("Wrong number of IntakeInputAxis: "
-                                            + String.valueOf(intakeInputAxisList.getLength()));
-            }
-            Node intakeInputAxisNode = intakeInputAxisList.item(0);
-            intakeInputAxis = Integer.valueOf(intakeInputAxisNode.getTextContent());
-
-            NodeList intakeOutputAxisList = doc.getElementsByTagName("IntakeOutputAxis");
-            if (intakeOutputAxisList.getLength() != 1) {
-                throw new XMLParseException("Wrong number of IntakeInputAxis: "
-                                            + String.valueOf(intakeOutputAxisList.getLength()));
-            }
-            Node intakeOutputAxisNode = intakeOutputAxisList.item(0);
-            intakeInputAxis = Integer.valueOf(intakeOutputAxisNode.getTextContent());
         } catch (Exception ex) {
             DriverStation.reportError("Failed to load XML file: " + ex.getMessage(), ex.getStackTrace());
             return;
@@ -208,38 +162,6 @@ public class Configuration {
         this.transmissionButtonMode = mode;
     }
 
-    public int getClawButton() {
-        return this.clawButton;
-    }
-
-    public void setClawButton(int button) {
-        this.clawButton = button;
-    }
-
-    public ButtonMode getClawButtonMode() {
-        return this.clawButtonMode;
-    }
-
-    public void setClawButtonMode(ButtonMode mode) {
-        this.clawButtonMode = mode;
-    }
-
-    public int getIntakeInputAxis() {
-        return intakeInputAxis;
-    }
-
-    public void setIntakeInputAxis(int axis) {
-        intakeInputAxis = axis;
-    }
-
-    public int getIntakeOutputAxis() {
-        return intakeOutputAxis;
-    }
-
-    public void setIntakeOutputAxis(int axis) {
-        intakeOutputAxis = axis;
-    }
-
     /**
      * Saves this configuration to an XML file. The data is saved to ~/configs/$(this.username).xml
      */
@@ -275,21 +197,6 @@ public class Configuration {
             transmissionButtonElement.setAttributeNode(transmissionButtonModeAttr);
             transmissionButtonElement.appendChild(doc.createTextNode(String.valueOf(transmissionButton)));
             rootElement.appendChild(transmissionButtonElement);
-
-            Element clawButtonElement = doc.createElement("ClawButton");
-            Attr clawButtonModeAttr = doc.createAttribute("mode");
-            clawButtonModeAttr.setValue(clawButtonMode.name().toLowerCase());
-            clawButtonElement.setAttributeNode(clawButtonModeAttr);
-            clawButtonElement.appendChild(doc.createTextNode(String.valueOf(clawButton)));
-            rootElement.appendChild(clawButtonElement);
-
-            Element intakeInputAxisElement = doc.createElement("IntakeInputAxis");
-            intakeInputAxisElement.appendChild(doc.createTextNode(String.valueOf(intakeInputAxis)));
-            rootElement.appendChild(intakeInputAxisElement);
-
-            Element intakeOutputAxisElement = doc.createElement("IntakeOutputAxis");
-            intakeOutputAxisElement.appendChild(doc.createTextNode(String.valueOf(intakeOutputAxis)));
-            rootElement.appendChild(intakeOutputAxisElement);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();

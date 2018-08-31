@@ -21,7 +21,6 @@ public class OI {
   private static XboxController controller = new XboxController(RobotMap.controller);
 
   private boolean isTransmissionToggledOn = false;
-  private boolean isClawSolenoidToggledOn = false;
 
   public double getLeftY() {
     return controller.getY(Robot.configManager.getCurrentConfiguration().getMovementHand()) *
@@ -42,21 +41,5 @@ public class OI {
       }
       return isTransmissionToggledOn;
     }
-  }
-
-  public boolean getClawSolenoid() {
-    if (Robot.configManager.getCurrentConfiguration().getClawButtonMode() == ButtonMode.HOLD) {
-      return controller.getRawButton(Robot.configManager.getCurrentConfiguration().getClawButton());
-    } else {  // ButtonMode.HOLD
-      if (controller.getRawButtonPressed(Robot.configManager.getCurrentConfiguration().getClawButton())) {
-        isClawSolenoidToggledOn = !isClawSolenoidToggledOn;
-      }
-      return isClawSolenoidToggledOn;
-    }
-  }
-
-  public double getClawWheels() {
-    return controller.getRawAxis(Robot.configManager.getCurrentConfiguration().getIntakeInputAxis()) -
-           controller.getRawAxis(Robot.configManager.getCurrentConfiguration().getIntakeOutputAxis());
   }
 }

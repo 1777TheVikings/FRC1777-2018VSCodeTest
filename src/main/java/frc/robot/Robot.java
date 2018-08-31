@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.commands.GreaseAuto;
-import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveTrain;
 
 import frc.utils.ConfigurationManager;
@@ -31,7 +30,6 @@ public class Robot extends TimedRobot {
   public static ConfigurationManager configManager = new ConfigurationManager();
 
   public static DriveTrain driveTrain = new DriveTrain();
-  public static Claw claw = new Claw();
 
   public static Compressor compressor = new Compressor(RobotMap.compressor);
 
