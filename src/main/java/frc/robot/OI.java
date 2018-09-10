@@ -20,6 +20,9 @@ import frc.utils.Configuration.ButtonMode;
 public class OI {
   private static XboxController controller = new XboxController(RobotMap.controller);
 
+  public static double kP = 0.009;  // TODO: tune kP
+  public static double errorThreshold = 2.0;
+
   private boolean isTransmissionToggledOn = false;
 
   public double getLeftY() {

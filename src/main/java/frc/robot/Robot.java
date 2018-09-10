@@ -7,12 +7,16 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.sensors.PigeonIMU;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.robot.commands.GreaseAuto;
+import frc.robot.commands.autonomous.components.*;
+import frc.robot.commands.autonomous.runs.MiddleStart;
 import frc.robot.subsystems.DriveTrain;
 
 import frc.utils.ConfigurationManager;
@@ -33,9 +37,10 @@ public class Robot extends TimedRobot {
 
   public static Compressor compressor = new Compressor(RobotMap.compressor);
 
-  public static GreaseAuto auto;
+  public static Command auto;
 
-  public static MB1013 distanceSensor = new MB1013(1);
+  public static MB1013 distanceSensor = new MB1013(1);  // TODO: don't hardcode this
+  public static PigeonIMU pigeon = new PigeonIMU(0);  // TODO: don't hardcode this
 
   /**
    * This function is run when the robot is first started up and should be
@@ -57,6 +62,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putNumber("DistanceSensor", distanceSensor.getDistance());
+
+    short[] accel = new short[3];
+    pigeon.getBiasedAccelerometer(accel);
+    SmartDashboard.putNumber("PigeonAccelX", accel[0]);
+    SmartDashboard.putNumber("PigeonAccelY", accel[1]);
+    SmartDashboard.putNumber("PigeonAccelZ", accel[2]);
+
+    double[] ypr = new double[3];
+    pigeon.getYawPitchRoll(ypr);
+    SmartDashboard.putNumber("PigeonYaw", ypr[0]);
   }
 
   /**
@@ -99,7 +114,9 @@ public class Robot extends TimedRobot {
     // if (m_autonomousCommand != null) {
     //   m_autonomousCommand.start();
     // }
-    auto = new GreaseAuto();
+    
+    // auto = new Turn(90.0);
+    auto = new MiddleStart();
     auto.start();
   }
 

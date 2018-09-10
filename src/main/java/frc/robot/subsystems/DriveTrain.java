@@ -43,12 +43,8 @@ public class DriveTrain extends Subsystem {
     setDefaultCommand(new TeleopDrive());
   }
 
-  public void teleopDrive(double throttle, double rotation) {
-    drive.arcadeDrive(throttle, rotation);
-  }
-
-  public void autoDrive(double left, double right) {
-    drive.tankDrive(left, right);
+  public void drive(double throttle, double rotation) {
+    drive.arcadeDrive(throttle, rotation, false);
   }
 
   public void fastTransmission() {

@@ -20,14 +20,12 @@ public class RobotMap {
   public static int driveRightRearMotor = 1;
   public static int driveLeftRearMotor = 4;
 
-	public static int clawLeftMotor = 5;
-	public static int clawRightMotor = 6;
-
   // Pneumatics
   // DoubleSolenoid values should be int[2] {forward channel, reverse channel}
   public static int compressor = 0;
   public static int[] transmissionSolenoid = {0, 1};
-	public static int[] clawSolenoid = {2, 3};
+  
+  // 
 
   // Joysticks
   public static int controller = 0;

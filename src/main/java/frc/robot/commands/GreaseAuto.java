@@ -24,7 +24,7 @@ public class GreaseAuto extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.autoDrive(0.3, 0.3);
+    Robot.driveTrain.drive(0.3, 0.0);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -36,7 +36,7 @@ public class GreaseAuto extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.autoDrive(0.0, 0.0);
+    Robot.driveTrain.drive(0.0, 0.0);
   }
 
   // Called when another command which requires one or more of the same
