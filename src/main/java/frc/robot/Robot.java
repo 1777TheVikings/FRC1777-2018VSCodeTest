@@ -9,17 +9,18 @@ package frc.robot;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.robot.commands.autonomous.components.*;
-import frc.robot.commands.autonomous.runs.MiddleStart;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.commands.autonomous.runs.*;
+import frc.robot.subsystems.*;
 
-import frc.utils.ConfigurationManager;
+import frc.utils.configuration.ConfigurationManager;
 import frc.utils.MB1013;
 
 /**
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
   public static ConfigurationManager configManager = new ConfigurationManager();
 
   public static DriveTrain driveTrain = new DriveTrain();
+  public static Arm arm = new Arm();
 
   public static Compressor compressor = new Compressor(RobotMap.compressor);
 
@@ -48,7 +50,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    
+    compressor.setClosedLoopControl(true);
+    CameraServer.getInstance().startAutomaticCapture();
+    configManager.setConfigurationID(1);
   }
 
   /**
@@ -116,7 +120,22 @@ public class Robot extends TimedRobot {
     // }
     
     // auto = new Turn(90.0);
-    auto = new MiddleStart();
+    String gameData = DriverStation.getInstance().getGameSpecificMessage();
+    if (gameData.length() != 3) {
+      DriverStation.reportError("FMS data is incorrect: " + gameData, false);
+      return;  // TODO: implement "cross line and stop" failsafe
+    }
+    String switchSide = gameData.substring(0, 1);
+
+    if (switchSide.equals("L"))
+      auto = new MiddleToLeft();
+    else if (switchSide.equals("R"))
+      auto = new MiddleToRight();
+    else {
+      DriverStation.reportError("FMS data is incorrect: " + gameData, false);
+      return;  // TODO: implement "cross line and stop" failsafe
+    }
+
     auto.start();
   }
 

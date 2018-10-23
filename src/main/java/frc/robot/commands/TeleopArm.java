@@ -5,23 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.autonomous.components;
+package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class MoveToWall extends Command {
-  private static final short impactThreshold = 2000;
-
-  private double moveSpeed;
-  private short prevAccelY = 0;
-  private boolean impactDetected = false;
-
-  public MoveToWall(double speed) {
-    moveSpeed = speed;
-
-    requires(Robot.driveTrain);
+public class TeleopArm extends Command {
+  public TeleopArm() {
+    requires(Robot.arm);
   }
 
   // Called just before this Command runs the first time
@@ -32,28 +23,24 @@ public class MoveToWall extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.drive(-moveSpeed, 0.0);
+    Robot.arm.move(Robot.oi.getArm());
 
-    short[] accel = new short[3];
-    Robot.pigeon.getBiasedAccelerometer(accel);
-    System.out.println("Current accelerometer Y: " + String.valueOf(accel[1]));
-    if ((accel[1] - prevAccelY) > impactThreshold) {
-      System.out.println("Hit the wall!");
-      impactDetected = true;
+    if (Robot.oi.getArmTransmission()) {
+      Robot.arm.fastGear();
+    } else {
+      Robot.arm.slowGear();
     }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return impactDetected;
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.drive(0.0, 0.0);
-    System.out.println("Auto done in " + String.valueOf(Timer.getMatchTime()) + "s");
   }
 
   // Called when another command which requires one or more of the same

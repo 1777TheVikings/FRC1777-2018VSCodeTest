@@ -15,15 +15,21 @@ package frc.robot;
  */
 public class RobotMap {
   // Talon SRX motors
-  public static int driveLeftFrontMotor = 3;
+  public static int driveLeftFrontMotor = 1;
   public static int driveRightFrontMotor = 2;
-  public static int driveRightRearMotor = 1;
+  public static int driveRightRearMotor = 3;
   public static int driveLeftRearMotor = 4;
+
+  // Victor SP motors
+  public static int armRightMotor = 0;
+  public static int armLeftMotor = 1;
+
 
   // Pneumatics
   // DoubleSolenoid values should be int[2] {forward channel, reverse channel}
   public static int compressor = 0;
   public static int[] transmissionSolenoid = {0, 1};
+  public static int[] armSolenoid = {2, 3};
   
   // 
 

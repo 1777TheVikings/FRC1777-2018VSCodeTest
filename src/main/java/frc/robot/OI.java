@@ -9,7 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Robot;
-import frc.utils.Configuration.ButtonMode;
+import frc.utils.configuration.Configuration.ButtonMode;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -20,27 +20,43 @@ import frc.utils.Configuration.ButtonMode;
 public class OI {
   private static XboxController controller = new XboxController(RobotMap.controller);
 
-  public static double kP = 0.009;  // TODO: tune kP
+  public static double kP = 0.013;
   public static double errorThreshold = 2.0;
 
   private boolean isTransmissionToggledOn = false;
+  private boolean isArmTransmissionToggledOn = false;
 
   public double getLeftY() {
-    return controller.getY(Robot.configManager.getCurrentConfiguration().getMovementHand()) *
-                           Robot.configManager.getCurrentConfiguration().getThrottleMultiplier();
+    return controller.getY(Robot.configManager.getSelectedConfiguration().movementHand) *
+                           Robot.configManager.getSelectedConfiguration().throttleMultiplier;
   }
 
   public double getLeftX() {
-    return controller.getX(Robot.configManager.getCurrentConfiguration().getMovementHand()) *
-                           Robot.configManager.getCurrentConfiguration().getRotationMultiplier();
+    return controller.getX(Robot.configManager.getSelectedConfiguration().movementHand) *
+                           Robot.configManager.getSelectedConfiguration().rotationMultiplier;
   }
 
   public boolean getTransmission() {
-    if (Robot.configManager.getCurrentConfiguration().getTransmissionButtonMode() == ButtonMode.HOLD) {
-      return controller.getRawButton(Robot.configManager.getCurrentConfiguration().getTransmissionButton());
+    if (Robot.configManager.getSelectedConfiguration().transmissionButtonMode == ButtonMode.HOLD) {
+      return controller.getRawButton(Robot.configManager.getSelectedConfiguration().transmissionButton);
     } else {  // ButtonMode.TOGGLE
-      if (controller.getRawButtonPressed(Robot.configManager.getCurrentConfiguration().getTransmissionButton())) {
+      if (controller.getRawButtonPressed(Robot.configManager.getSelectedConfiguration().transmissionButton)) {
         isTransmissionToggledOn = !isTransmissionToggledOn;
+      }
+      return isTransmissionToggledOn;
+    }
+  }
+
+  public double getArm() {
+    return controller.getY(Robot.configManager.getSelectedConfiguration().armHand);
+  }
+
+  public boolean getArmTransmission() {
+    if (Robot.configManager.getSelectedConfiguration().armTransmissionButtonMode == ButtonMode.HOLD) {
+      return controller.getRawButton(Robot.configManager.getSelectedConfiguration().armTransmissionButton);
+    } else {  // ButtonMode.TOGGLE
+      if (controller.getRawButtonPressed(Robot.configManager.getSelectedConfiguration().armTransmissionButton)) {
+        isArmTransmissionToggledOn = !isArmTransmissionToggledOn;
       }
       return isTransmissionToggledOn;
     }
