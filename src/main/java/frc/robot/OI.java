@@ -25,6 +25,7 @@ public class OI {
 
   private boolean isTransmissionToggledOn = false;
   private boolean isArmTransmissionToggledOn = false;
+  private boolean isClawToggledOpen = false;
 
   public double getLeftY() {
     return controller.getY(Robot.configManager.getSelectedConfiguration().movementHand) *
@@ -59,6 +60,22 @@ public class OI {
         isArmTransmissionToggledOn = !isArmTransmissionToggledOn;
       }
       return isTransmissionToggledOn;
+    }
+  }
+
+  public double getClaw() {
+    return controller.getTriggerAxis(Robot.configManager.getSelectedConfiguration().clawIntakeTrigger) -
+           controller.getTriggerAxis(Robot.configManager.getSelectedConfiguration().clawOutputTrigger);
+  }
+
+  public boolean getClawOpen() {
+    if (Robot.configManager.getSelectedConfiguration().clawOpenButtonMode == ButtonMode.HOLD) {
+      return controller.getRawButton(Robot.configManager.getSelectedConfiguration().clawOpenButton);
+    } else {  // ButtonMode.TOGGLE
+      if (controller.getRawButtonPressed(Robot.configManager.getSelectedConfiguration().clawOpenButton)) {
+        isClawToggledOpen = !isClawToggledOpen;
+      }
+      return isClawToggledOpen;
     }
   }
 }

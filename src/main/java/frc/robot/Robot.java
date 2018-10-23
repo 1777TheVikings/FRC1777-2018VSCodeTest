@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
 
   public static DriveTrain driveTrain = new DriveTrain();
   public static Arm arm = new Arm();
+  public static Claw claw = new Claw();
 
   public static Compressor compressor = new Compressor(RobotMap.compressor);
 

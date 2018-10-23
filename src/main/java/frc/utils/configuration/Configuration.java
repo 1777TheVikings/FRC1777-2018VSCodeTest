@@ -22,8 +22,12 @@ public class Configuration {
   public int transmissionButton = 0;
   public ButtonMode transmissionButtonMode = ButtonMode.HOLD;
   public Hand armHand = Hand.kRight;
-  public int armTransmissionButton = 2;
+  public int armTransmissionButton = 3;
   public ButtonMode armTransmissionButtonMode = ButtonMode.HOLD;
+  public Hand clawIntakeTrigger = Hand.kLeft;
+  public Hand clawOutputTrigger = Hand.kRight;
+  public int clawOpenButton = 2;
+  public ButtonMode clawOpenButtonMode = ButtonMode.HOLD;
 
   public Configuration() {
   }

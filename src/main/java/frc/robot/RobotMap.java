@@ -23,6 +23,8 @@ public class RobotMap {
   // Victor SP motors
   public static int armRightMotor = 0;
   public static int armLeftMotor = 1;
+  public static int clawLeftMotor = 2;
+  public static int clawRightMotor = 3;
 
 
   // Pneumatics
@@ -30,8 +32,7 @@ public class RobotMap {
   public static int compressor = 0;
   public static int[] transmissionSolenoid = {0, 1};
   public static int[] armSolenoid = {2, 3};
-  
-  // 
+  public static int[] clawSolenoid = {4, 5};
 
   // Joysticks
   public static int controller = 0;
