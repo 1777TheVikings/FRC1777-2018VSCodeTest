@@ -28,6 +28,9 @@ public class Claw extends Subsystem {
     setDefaultCommand(new TeleopClaw());
   }
 
+  /**
+   * Output is negative, intake is positive.
+   */
   public void move(double speed) {
     leftWheels.set(speed);
     rightWheels.set(speed * -1.0);

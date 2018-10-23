@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.commands.autonomous.runs.*;
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot {
   public static Compressor compressor = new Compressor(RobotMap.compressor);
 
   public static Command auto;
+  public static SendableChooser<String> autoChooser;
 
   public static MB1013 distanceSensor = new MB1013(1);  // TODO: don't hardcode this
   public static PigeonIMU pigeon = new PigeonIMU(0);  // TODO: don't hardcode this
@@ -54,6 +56,13 @@ public class Robot extends TimedRobot {
     compressor.setClosedLoopControl(true);
     CameraServer.getInstance().startAutomaticCapture();
     configManager.setConfigurationID(1);
+
+    autoChooser = new SendableChooser<>();
+    autoChooser.addDefault("Cross line", "c");
+    autoChooser.addObject("Start left side", "l");
+    autoChooser.addObject("Start middle", "m");
+    autoChooser.addObject("Start right side", "r");
+    SmartDashboard.putData("auto_chooser", autoChooser);
   }
 
   /**
@@ -114,19 +123,52 @@ public class Robot extends TimedRobot {
      * = new MyAutoCommand(); break; case "Default Auto": default:
      * autonomousCommand = new ExampleCommand(); break; }
      */
-
-    // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-    //   m_autonomousCommand.start();
-    // }
     
-    // auto = new Turn(90.0);
     String gameData = DriverStation.getInstance().getGameSpecificMessage();
     if (gameData.length() != 3) {
       DriverStation.reportError("FMS data is incorrect: " + gameData, false);
       return;  // TODO: implement "cross line and stop" failsafe
     }
     String switchSide = gameData.substring(0, 1);
+
+    String autoSelected = SmartDashboard.getString("auto_chooser", "c");
+    switch (autoSelected) {
+      case "l":
+        if (switchSide.equals("L"))
+          auto = new LeftToLeft();
+        else if (switchSide.equals("R"))
+          auto = new CrossLine();
+        else {
+          DriverStation.reportError("FMS data is incorrect: " + gameData, false);
+          auto = new CrossLine();
+        }
+        break;
+      case "m":
+        if (switchSide.equals("L"))
+          auto = new MiddleToLeft();
+        else if (switchSide.equals("R"))
+          auto = new MiddleToRight();
+        else {
+          DriverStation.reportError("FMS data is incorrect: " + gameData, false);
+          auto = new CrossLine();
+        }
+        break;
+      case "r":
+        if (switchSide.equals("L"))
+          auto = new CrossLine();
+        else if (switchSide.equals("R"))
+          // auto = new RightToRight();
+          auto = new CrossLine();
+        else {
+          DriverStation.reportError("FMS data is incorrect: " + gameData, false);
+          auto = new CrossLine();
+        }
+        break;
+      case "c":
+      default:
+        auto = new CrossLine();
+        break;
+    }
 
     if (switchSide.equals("L"))
       auto = new MiddleToLeft();

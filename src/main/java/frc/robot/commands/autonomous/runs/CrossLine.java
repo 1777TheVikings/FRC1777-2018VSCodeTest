@@ -10,18 +10,11 @@ package frc.robot.commands.autonomous.runs;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.autonomous.components.*;
 
-public class MiddleToRight extends CommandGroup {
+public class CrossLine extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public MiddleToRight() {
-    addSequential(new Move(0.33, 1.0));
-    addSequential(new Turn(45.0));
-    addSequential(new Move(0.33, 2.9));
-    addSequential(new Turn(-45.0));
-    addSequential(new MoveToWall(0.33));
-    addSequential(new Move(0.33, 0.25));
-    addSequential(new LowerArm());
-    addSequential(new DropCube());
+  public CrossLine() {
+    addSequential(new Move(0.33, 4.0));
   }
 }

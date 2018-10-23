@@ -18,5 +18,7 @@ public class LeftToLeft extends CommandGroup {
     addSequential(new Move(0.33, 5.5));
     addSequential(new Turn(90.0));
     addSequential(new MoveToWall(0.33));
+    addSequential(new LowerArm());
+    addSequential(new DropCube());
   }
 }
