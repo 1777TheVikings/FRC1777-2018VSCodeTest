@@ -9,6 +9,7 @@ package frc.robot;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -54,9 +55,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     compressor.setClosedLoopControl(true);
-    CameraServer.getInstance().startAutomaticCapture();
-    configManager.setConfigurationID(1);
 
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setFPS(30);
+    camera.setResolution(320, 240);
+    camera.setExposureManual(35);
+
+    configManager.setConfigurationID(1);
+    System.out.println("Selected config: " + configManager.getSelectedConfiguration().getClass());
+    
     autoChooser = new SendableChooser<>();
     autoChooser.addDefault("Cross line", "c");
     autoChooser.addObject("Start left side", "l");
@@ -131,7 +138,11 @@ public class Robot extends TimedRobot {
     }
     String switchSide = gameData.substring(0, 1);
 
-    String autoSelected = SmartDashboard.getString("auto_chooser", "c");
+    String autoSelected = autoChooser.getSelected();
+
+    System.out.println("Auto string: " + gameData);
+    System.out.println("Selected start spot: " + autoSelected);
+
     switch (autoSelected) {
       case "l":
         if (switchSide.equals("L"))
@@ -170,15 +181,6 @@ public class Robot extends TimedRobot {
         break;
     }
 
-    if (switchSide.equals("L"))
-      auto = new MiddleToLeft();
-    else if (switchSide.equals("R"))
-      auto = new MiddleToRight();
-    else {
-      DriverStation.reportError("FMS data is incorrect: " + gameData, false);
-      return;  // TODO: implement "cross line and stop" failsafe
-    }
-
     auto.start();
   }
 
@@ -196,7 +198,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    // auto.cancel();
+    if (auto != null && auto.isRunning())
+      auto.cancel();
   }
 
   /**

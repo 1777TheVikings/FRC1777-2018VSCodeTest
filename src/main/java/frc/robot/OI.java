@@ -28,20 +28,20 @@ public class OI {
   private boolean isClawToggledOpen = false;
 
   public double getLeftY() {
-    return controller.getY(Robot.configManager.getSelectedConfiguration().movementHand) *
-                           Robot.configManager.getSelectedConfiguration().throttleMultiplier;
+    return controller.getY(Robot.configManager.getSelectedConfiguration().getMovementHand()) *
+                           Robot.configManager.getSelectedConfiguration().getThrottleMultiplier();
   }
 
   public double getLeftX() {
-    return controller.getX(Robot.configManager.getSelectedConfiguration().movementHand) *
-                           Robot.configManager.getSelectedConfiguration().rotationMultiplier;
+    return controller.getX(Robot.configManager.getSelectedConfiguration().getMovementHand()) *
+                           Robot.configManager.getSelectedConfiguration().getRotationMultiplier();
   }
 
   public boolean getTransmission() {
-    if (Robot.configManager.getSelectedConfiguration().transmissionButtonMode == ButtonMode.HOLD) {
-      return controller.getRawButton(Robot.configManager.getSelectedConfiguration().transmissionButton);
+    if (Robot.configManager.getSelectedConfiguration().getTransmissionButtonMode() == ButtonMode.HOLD) {
+      return controller.getRawButton(Robot.configManager.getSelectedConfiguration().getTransmissionButton());
     } else {  // ButtonMode.TOGGLE
-      if (controller.getRawButtonPressed(Robot.configManager.getSelectedConfiguration().transmissionButton)) {
+      if (controller.getRawButtonPressed(Robot.configManager.getSelectedConfiguration().getTransmissionButton())) {
         isTransmissionToggledOn = !isTransmissionToggledOn;
       }
       return isTransmissionToggledOn;
@@ -49,14 +49,15 @@ public class OI {
   }
 
   public double getArm() {
-    return controller.getY(Robot.configManager.getSelectedConfiguration().armHand);
+    return controller.getY(Robot.configManager.getSelectedConfiguration().getArmHand()) *
+                           Robot.configManager.getSelectedConfiguration().getArmMultiplier();
   }
 
   public boolean getArmTransmission() {
-    if (Robot.configManager.getSelectedConfiguration().armTransmissionButtonMode == ButtonMode.HOLD) {
-      return controller.getRawButton(Robot.configManager.getSelectedConfiguration().armTransmissionButton);
+    if (Robot.configManager.getSelectedConfiguration().getArmTransmissionButtonMode() == ButtonMode.HOLD) {
+      return controller.getRawButton(Robot.configManager.getSelectedConfiguration().getArmTransmissionButton());
     } else {  // ButtonMode.TOGGLE
-      if (controller.getRawButtonPressed(Robot.configManager.getSelectedConfiguration().armTransmissionButton)) {
+      if (controller.getRawButtonPressed(Robot.configManager.getSelectedConfiguration().getArmTransmissionButton())) {
         isArmTransmissionToggledOn = !isArmTransmissionToggledOn;
       }
       return isTransmissionToggledOn;
@@ -64,15 +65,15 @@ public class OI {
   }
 
   public double getClaw() {
-    return controller.getTriggerAxis(Robot.configManager.getSelectedConfiguration().clawIntakeTrigger) -
-           controller.getTriggerAxis(Robot.configManager.getSelectedConfiguration().clawOutputTrigger);
+    return controller.getTriggerAxis(Robot.configManager.getSelectedConfiguration().getClawIntakeTrigger()) -
+           controller.getTriggerAxis(Robot.configManager.getSelectedConfiguration().getClawOutputTrigger());
   }
 
   public boolean getClawOpen() {
-    if (Robot.configManager.getSelectedConfiguration().clawOpenButtonMode == ButtonMode.HOLD) {
-      return controller.getRawButton(Robot.configManager.getSelectedConfiguration().clawOpenButton);
+    if (Robot.configManager.getSelectedConfiguration().getClawOpenButtonMode() == ButtonMode.HOLD) {
+      return controller.getRawButton(Robot.configManager.getSelectedConfiguration().getClawOpenButton());
     } else {  // ButtonMode.TOGGLE
-      if (controller.getRawButtonPressed(Robot.configManager.getSelectedConfiguration().clawOpenButton)) {
+      if (controller.getRawButtonPressed(Robot.configManager.getSelectedConfiguration().getClawOpenButton())) {
         isClawToggledOpen = !isClawToggledOpen;
       }
       return isClawToggledOpen;

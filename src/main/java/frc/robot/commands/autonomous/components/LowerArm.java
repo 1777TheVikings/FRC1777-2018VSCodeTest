@@ -24,7 +24,7 @@ public class LowerArm extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.arm.move(0.25);  // joystick Y axis is inverted, so this makes it go down
+    Robot.arm.move(0.23);  // joystick Y axis is inverted, so this makes it go down
   }
 
   // Make this return true when this Command no longer needs to run execute()

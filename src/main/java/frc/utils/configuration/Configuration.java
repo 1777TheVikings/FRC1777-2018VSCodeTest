@@ -15,24 +15,59 @@ public class Configuration {
     TOGGLE
   }
 
-  public String username = "Default";
-  public Hand movementHand = Hand.kLeft;
-  public double throttleMultiplier = 1.0;
-  public double rotationMultiplier = 1.0;
-  public int transmissionButton = 0;
-  public ButtonMode transmissionButtonMode = ButtonMode.HOLD;
-  public Hand armHand = Hand.kRight;
-  public int armTransmissionButton = 3;
-  public ButtonMode armTransmissionButtonMode = ButtonMode.HOLD;
-  public Hand clawIntakeTrigger = Hand.kLeft;
-  public Hand clawOutputTrigger = Hand.kRight;
-  public int clawOpenButton = 2;
-  public ButtonMode clawOpenButtonMode = ButtonMode.HOLD;
-
-  public Configuration() {
+  public String getUsername() {
+    return "Default";
   }
 
-  public Configuration(String username) {
-    this.username = username;
+  public Hand getMovementHand() {
+    return Hand.kLeft;
+  }
+
+  public double getThrottleMultiplier() {
+    return 1.0;
+  }
+
+  public double getRotationMultiplier() {
+    return 1.0;
+  }
+
+  public int getTransmissionButton() {
+    return 1;
+  }
+
+  public ButtonMode getTransmissionButtonMode() {
+    return ButtonMode.HOLD;
+  }
+
+  public Hand getArmHand() {
+    return Hand.kRight;
+  }
+
+  public double getArmMultiplier() {
+    return 0.5;
+  }
+
+  public int getArmTransmissionButton() {
+    return 4;
+  }
+
+  public ButtonMode getArmTransmissionButtonMode() {
+    return ButtonMode.HOLD;
+  }
+
+  public Hand getClawIntakeTrigger() {
+    return Hand.kLeft;
+  }
+
+  public Hand getClawOutputTrigger() {
+    return Hand.kRight;
+  }
+
+  public int getClawOpenButton() {
+    return 3;
+  }
+
+  public ButtonMode getClawOpenButtonMode() {
+    return ButtonMode.HOLD;
   }
 }

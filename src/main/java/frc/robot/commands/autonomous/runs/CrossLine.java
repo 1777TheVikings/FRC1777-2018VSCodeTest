@@ -15,6 +15,6 @@ public class CrossLine extends CommandGroup {
    * Add your docs here.
    */
   public CrossLine() {
-    addSequential(new Move(0.33, 4.0));
+    addSequential(new Move(0.5, 2.64));
   }
 }

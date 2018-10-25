@@ -15,11 +15,11 @@ public class MiddleToRight extends CommandGroup {
    * Add your docs here.
    */
   public MiddleToRight() {
-    addSequential(new Move(0.33, 1.0));
+    addSequential(new Move(0.5, 0.66));
     addSequential(new Turn(45.0));
-    addSequential(new Move(0.33, 2.9));
+    addSequential(new Move(0.5, 1.91));
     addSequential(new Turn(-45.0));
-    addSequential(new MoveToWall(0.33));
+    addSequential(new MoveToWall(0.5));
     addSequential(new Move(0.33, 0.25));
     addSequential(new LowerArm());
     addSequential(new DropCube());

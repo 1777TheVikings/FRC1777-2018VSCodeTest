@@ -33,14 +33,14 @@ public class Claw extends Subsystem {
    */
   public void move(double speed) {
     leftWheels.set(speed);
-    rightWheels.set(speed * -1.0);
+    rightWheels.set(speed);
   }
 
   public void openClaw() {
-    clawSolenoid.set(Value.kReverse);
+    clawSolenoid.set(Value.kForward);
   }
 
   public void closeClaw() {
-    clawSolenoid.set(Value.kForward);
+    clawSolenoid.set(Value.kReverse);
   }
 }

@@ -2,8 +2,28 @@ package frc.utils.configuration;
 
 
 public class AydanConfig extends Configuration {
-    public String username = "Aydan";
-    public double rotationMultiplier = 0.8;
-    public ButtonMode transmissionButtonMode = ButtonMode.TOGGLE;
-    public ButtonMode armTransmissionButtonMode = ButtonMode.TOGGLE;
+    @Override
+    public String getUsername() {
+        return "Aydan";
+    }
+
+    @Override
+    public double getRotationMultiplier() {
+        return 0.8;
+    }
+
+    @Override
+    public ButtonMode getTransmissionButtonMode() {
+        return ButtonMode.TOGGLE;
+    }
+
+    @Override
+    public ButtonMode getArmTransmissionButtonMode() {
+        return ButtonMode.TOGGLE;
+    }
+
+    @Override
+    public ButtonMode getClawOpenButtonMode() {
+        return ButtonMode.TOGGLE;
+    }
 }

@@ -7,9 +7,6 @@
 
 package frc.robot.commands.autonomous.components;
 
-import java.sql.Time;
-import java.util.Timer;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
@@ -24,6 +21,7 @@ public class Turn extends Command {
     Robot.pigeon.setYaw(0.0, 1000);
 
     requires(Robot.driveTrain);
+    setTimeout(4.0);  // failsafe
   }
 
   // Called just before this Command runs the first time
@@ -47,7 +45,7 @@ public class Turn extends Command {
     if (Math.abs(error) < OI.errorThreshold) {
       isFinished = true;
     } else {
-      double turn_speed = OI.kP * error;
+      double turn_speed = OI.kP * error * 0.75;
       System.out.println("Output value: " + String.valueOf(turn_speed));
       // if (turn_speed < -0.15) {
       //   System.out.println("Value too low!");
@@ -63,7 +61,7 @@ public class Turn extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isFinished;
+    return isFinished || isTimedOut();
   }
 
   // Called once after isFinished returns true

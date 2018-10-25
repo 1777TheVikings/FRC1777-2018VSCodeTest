@@ -29,8 +29,8 @@ public class Arm extends Subsystem {
   }
 
   public void move(double speed) {
-    leftVictor.set(speed);
-    rightVictor.set(speed * -1.0);
+    leftVictor.set(-speed);
+    rightVictor.set(speed);
   }
 
   public void fastGear() {

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class MoveToWall extends Command {
-  private static final short impactThreshold = 2000;
+  private static final short impactThreshold = 1250;
 
   private double moveSpeed;
   private short prevAccelY = 0;
@@ -22,6 +22,7 @@ public class MoveToWall extends Command {
     moveSpeed = speed;
 
     requires(Robot.driveTrain);
+    setTimeout(4.0);  // failsafe
   }
 
   // Called just before this Command runs the first time
@@ -46,7 +47,7 @@ public class MoveToWall extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return impactDetected;
+    return impactDetected || isTimedOut();
   }
 
   // Called once after isFinished returns true
