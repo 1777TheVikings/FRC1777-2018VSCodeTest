@@ -45,8 +45,8 @@ public class Robot extends TimedRobot {
   public static Command auto;
   public static SendableChooser<String> autoChooser;
 
-  public static MB1013 distanceSensor = new MB1013(1);  // TODO: don't hardcode this
-  public static PigeonIMU pigeon = new PigeonIMU(0);  // TODO: don't hardcode this
+  public static MB1013 distanceSensor = new MB1013(RobotMap.distanceSensor);
+  public static PigeonIMU pigeon = new PigeonIMU(RobotMap.pigeon);
 
   /**
    * This function is run when the robot is first started up and should be
@@ -134,7 +134,9 @@ public class Robot extends TimedRobot {
     String gameData = DriverStation.getInstance().getGameSpecificMessage();
     if (gameData.length() != 3) {
       DriverStation.reportError("FMS data is incorrect: " + gameData, false);
-      return;  // TODO: implement "cross line and stop" failsafe
+      auto = new CrossLine();  // failsafe for competition
+      auto.start();
+      return;
     }
     String switchSide = gameData.substring(0, 1);
 

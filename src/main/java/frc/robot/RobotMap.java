@@ -27,12 +27,20 @@ public class RobotMap {
   public static int clawRightMotor = 3;
 
 
+  // CAN bus sensors
+  public static int pigeon = 0;
+
+  // DIO sensors
+  public static int distanceSensor = 1;
+
+
   // Pneumatics
   // DoubleSolenoid values should be int[2] {forward channel, reverse channel}
   public static int compressor = 0;
   public static int[] transmissionSolenoid = {0, 1};
   public static int[] armSolenoid = {2, 3};
   public static int[] clawSolenoid = {4, 5};
+
 
   // Joysticks
   public static int controller = 0;
