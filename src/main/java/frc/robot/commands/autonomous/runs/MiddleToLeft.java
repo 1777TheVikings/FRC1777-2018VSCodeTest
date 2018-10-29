@@ -17,7 +17,7 @@ public class MiddleToLeft extends CommandGroup {
   public MiddleToLeft() {
     addSequential(new Move(0.5, 0.66));
     addSequential(new Turn(-45.0));
-    addSequential(new Move(0.5, 1.91));
+    addSequential(new Move(0.5, 1.7));
     addSequential(new Turn(45.0));
     addSequential(new MoveToWall(0.5));
     addSequential(new Move(0.33, 0.25));

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class MoveToWall extends Command {
-  private static final short impactThreshold = 1250;
+  private static final short impactThreshold = 2500;
 
   private double moveSpeed;
   private short prevAccelY = 0;

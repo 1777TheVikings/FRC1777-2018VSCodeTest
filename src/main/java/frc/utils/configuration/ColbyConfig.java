@@ -9,7 +9,7 @@ public class ColbyConfig extends Configuration {
 
     @Override
     public double getRotationMultiplier() {
-        return 0.8;
+        return 0.7;
     }
 
     @Override

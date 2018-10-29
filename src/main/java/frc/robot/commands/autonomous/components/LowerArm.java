@@ -13,7 +13,7 @@ import frc.robot.Robot;
 public class LowerArm extends Command {
   public LowerArm() {
     requires(Robot.arm);
-    setTimeout(0.75);  // in low gear, the arm rotates 90 degrees in 0.21s at full speed
+    setTimeout(0.85);  // in low gear, the arm rotates 90 degrees in 0.21s at full speed
   }
 
   // Called just before this Command runs the first time

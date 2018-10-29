@@ -67,8 +67,10 @@ public class Robot extends TimedRobot {
     autoChooser = new SendableChooser<>();
     autoChooser.addDefault("Cross line", "c");
     autoChooser.addObject("Start left side", "l");
+    autoChooser.addObject("Start left side (no crossing)", "lnc");
     autoChooser.addObject("Start middle", "m");
     autoChooser.addObject("Start right side", "r");
+    autoChooser.addObject("Start right side (no crossing)", "rnc");
     SmartDashboard.putData("auto_chooser", autoChooser);
   }
 
@@ -150,6 +152,16 @@ public class Robot extends TimedRobot {
         if (switchSide.equals("L"))
           auto = new LeftToLeft();
         else if (switchSide.equals("R"))
+          auto = new LeftToRight();
+        else {
+          DriverStation.reportError("FMS data is incorrect: " + gameData, false);
+          auto = new CrossLine();
+        }
+        break;
+      case "lnc":
+        if (switchSide.equals("L"))
+          auto = new LeftToLeft();
+        else if (switchSide.equals("R"))
           auto = new CrossLine();
         else {
           DriverStation.reportError("FMS data is incorrect: " + gameData, false);
@@ -168,10 +180,19 @@ public class Robot extends TimedRobot {
         break;
       case "r":
         if (switchSide.equals("L"))
+          auto = new RightToLeft();
+        else if (switchSide.equals("R"))
+          auto = new RightToRight();
+        else {
+          DriverStation.reportError("FMS data is incorrect: " + gameData, false);
+          auto = new CrossLine();
+        }
+        break;
+      case "rnc":
+        if (switchSide.equals("L"))
           auto = new CrossLine();
         else if (switchSide.equals("R"))
-          // auto = new RightToRight();
-          auto = new CrossLine();
+          auto = new RightToRight();
         else {
           DriverStation.reportError("FMS data is incorrect: " + gameData, false);
           auto = new CrossLine();
