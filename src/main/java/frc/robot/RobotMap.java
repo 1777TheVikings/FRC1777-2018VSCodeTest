@@ -30,9 +30,6 @@ public class RobotMap {
   // CAN bus sensors
   public static int pigeon = 0;
 
-  // DIO sensors
-  public static int distanceSensor = 1;
-
 
   // Pneumatics
   // DoubleSolenoid values should be int[2] {forward channel, reverse channel}

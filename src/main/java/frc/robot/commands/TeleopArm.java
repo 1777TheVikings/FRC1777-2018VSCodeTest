@@ -10,6 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+/**
+ * Controls the arm during the teleoperated period.
+ */
 public class TeleopArm extends Command {
   public TeleopArm() {
     requires(Robot.arm);

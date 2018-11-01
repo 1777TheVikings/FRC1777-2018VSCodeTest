@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 
+/**
+ * Moves the robot linearly based on time. This uses a P loop and the Pigeon IMU to ensure
+ * that the robot actually drives straight.
+ */
 public class Move extends Command {
   double speed;
   double moveTime;
@@ -34,7 +38,6 @@ public class Move extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    System.out.println("called");
     double[] pigeon_out = new double[3];
     Robot.pigeon.getYawPitchRoll(pigeon_out);  // TODO: abstract this?
 
@@ -54,7 +57,6 @@ public class Move extends Command {
   @Override
   protected void end() {
     Robot.driveTrain.drive(0.0, 0.0);
-    System.out.println("Finished!");
   }
 
   // Called when another command which requires one or more of the same

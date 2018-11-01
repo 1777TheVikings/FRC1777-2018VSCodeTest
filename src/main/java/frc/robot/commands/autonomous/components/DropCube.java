@@ -10,6 +10,10 @@ package frc.robot.commands.autonomous.components;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+/**
+ * Drops the cube from the claw. This runs for longer than necessary, so the timeout can be
+ * reduced safely if needed.
+ */
 public class DropCube extends Command {
   public DropCube() {
     requires(Robot.claw);

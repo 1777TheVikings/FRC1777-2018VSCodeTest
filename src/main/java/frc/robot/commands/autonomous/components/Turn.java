@@ -11,6 +11,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 
+/**
+ * Turns the robot. This uses a P loop and a Pigeon IMU to ensure that the robot rotates
+ * to the correct angle. We aren't expecting perfect precision (and we don't need it,
+ * given our high error tolerance this year), but it should be good enough.
+ */
 public class Turn extends Command {
   double targetAngle;
   double error;
@@ -36,24 +41,11 @@ public class Turn extends Command {
     double[] pigeon_out = new double[3];
     Robot.pigeon.getYawPitchRoll(pigeon_out);  // TODO: abstract this?
     error = targetAngle - pigeon_out[0];
-
-    System.out.println("-----");
-    System.out.println("Yaw: " + String.valueOf(pigeon_out[0]));
-    System.out.println("Error: " + String.valueOf(error));
-    System.out.println("Below threshold?: " + String.valueOf(error < OI.errorThreshold));
-
+    
     if (Math.abs(error) < OI.errorThreshold) {
       isFinished = true;
     } else {
       double turn_speed = OI.kP * error * 0.75;
-      System.out.println("Output value: " + String.valueOf(turn_speed));
-      // if (turn_speed < -0.15) {
-      //   System.out.println("Value too low!");
-      //   turn_speed = -0.15;
-      // } else if (turn_speed > 0.25) {
-      //   System.out.println("Value too high!");
-      //   turn_speed = 0.15;
-      // }
       Robot.driveTrain.drive(0.0, turn_speed);
     }
   }
@@ -68,7 +60,6 @@ public class Turn extends Command {
   @Override
   protected void end() {
     Robot.driveTrain.drive(0.0, 0.0);
-    System.out.println("Finished!");
   }
 
   // Called when another command which requires one or more of the same

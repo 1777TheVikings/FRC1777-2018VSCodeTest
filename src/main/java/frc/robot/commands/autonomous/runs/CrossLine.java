@@ -10,10 +10,10 @@ package frc.robot.commands.autonomous.runs;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.autonomous.components.*;
 
+/**
+ * Crosses the auto line from any starting position.
+ */
 public class CrossLine extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
   public CrossLine() {
     addSequential(new Move(0.5, 3.0));
   }

@@ -10,10 +10,14 @@ package frc.robot.commands.autonomous.components;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+/**
+ * Lowers the robot's arm. Our robot's arm must start pointing directly upwards to stay within
+ * the frame perimeter, so it has to be lowered before the cube can be placed in the switch.
+ */
 public class LowerArm extends Command {
   public LowerArm() {
     requires(Robot.arm);
-    setTimeout(0.85);  // in low gear, the arm rotates 90 degrees in 0.21s at full speed
+    setTimeout(0.85);
   }
 
   // Called just before this Command runs the first time

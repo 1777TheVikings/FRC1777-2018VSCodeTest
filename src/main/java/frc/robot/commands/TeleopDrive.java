@@ -10,6 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+/**
+ * Controls the drive train during the teleoperated period.
+ */
 public class TeleopDrive extends Command {
   public TeleopDrive() {
     requires(Robot.driveTrain);

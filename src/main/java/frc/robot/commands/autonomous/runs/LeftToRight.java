@@ -10,10 +10,11 @@ package frc.robot.commands.autonomous.runs;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.autonomous.components.*;
 
+/**
+ * Places a cube in the right side of the switch when starting from the left side. This
+ * hasn't been tested, but "it should work".
+ */
 public class LeftToRight extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
   public LeftToRight() {
     addSequential(new Move(0.5, 5.2));
     addSequential(new Turn(90.0));

@@ -23,7 +23,6 @@ import frc.robot.commands.autonomous.runs.*;
 import frc.robot.subsystems.*;
 
 import frc.utils.configuration.ConfigurationManager;
-import frc.utils.MB1013;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -45,7 +44,6 @@ public class Robot extends TimedRobot {
   public static Command auto;
   public static SendableChooser<String> autoChooser;
 
-  public static MB1013 distanceSensor = new MB1013(RobotMap.distanceSensor);
   public static PigeonIMU pigeon = new PigeonIMU(RobotMap.pigeon);
 
   /**
@@ -59,7 +57,7 @@ public class Robot extends TimedRobot {
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setFPS(30);
     camera.setResolution(320, 240);
-    camera.setExposureManual(35);
+    camera.setExposureManual(35);  // auto exposure can heavily impact the framerate
 
     configManager.setConfigurationID(1);
     System.out.println("Selected config: " + configManager.getSelectedConfiguration().getClass());
@@ -67,6 +65,9 @@ public class Robot extends TimedRobot {
     autoChooser = new SendableChooser<>();
     autoChooser.addDefault("Cross line", "c");
     autoChooser.addObject("Start left side", "l");
+    /* If our side of the switch is on the side of the field opposite our robot, we only want to
+       drive fowards and stop rather than go around to the other side. This helps us prevent any
+       conflicts with other teams' autonomous routines, especially if they are using the scale. */
     autoChooser.addObject("Start left side (no crossing)", "lnc");
     autoChooser.addObject("Start middle", "m");
     autoChooser.addObject("Start right side", "r");
@@ -84,8 +85,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("DistanceSensor", distanceSensor.getDistance());
-
     short[] accel = new short[3];
     pigeon.getBiasedAccelerometer(accel);
     SmartDashboard.putNumber("PigeonAccelX", accel[0]);

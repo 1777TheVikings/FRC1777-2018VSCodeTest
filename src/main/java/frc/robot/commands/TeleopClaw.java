@@ -10,6 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+/**
+ * Controls the claw during the teleoperated period.
+ */
 public class TeleopClaw extends Command {
   public TeleopClaw() {
     requires(Robot.claw);

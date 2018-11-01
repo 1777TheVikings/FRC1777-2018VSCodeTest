@@ -7,10 +7,14 @@
 
 package frc.robot.commands.autonomous.components;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+/**
+ * Moves the robot linearly until it collides with a wall. This uses the Pigeon IMU for
+ * impact detection. Keep in mind that due to the sign of the impact threshold, this
+ * only works when hitting the wall with the front of the robot.
+ */
 public class MoveToWall extends Command {
   private static final short impactThreshold = 2500;
 
@@ -37,9 +41,7 @@ public class MoveToWall extends Command {
 
     short[] accel = new short[3];
     Robot.pigeon.getBiasedAccelerometer(accel);
-    System.out.println("Current accelerometer Y: " + String.valueOf(accel[1]));
     if ((accel[1] - prevAccelY) > impactThreshold) {
-      System.out.println("Hit the wall!");
       impactDetected = true;
     }
   }
@@ -54,7 +56,6 @@ public class MoveToWall extends Command {
   @Override
   protected void end() {
     Robot.driveTrain.drive(0.0, 0.0);
-    System.out.println("Auto done in " + String.valueOf(Timer.getMatchTime()) + "s");
   }
 
   // Called when another command which requires one or more of the same
